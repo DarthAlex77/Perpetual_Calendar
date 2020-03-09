@@ -1,0 +1,68 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Perpetual_Calendar.ViewModels"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        xmlns:converters="clr-namespace:Perpetual_Calendar.Converters"
+        x:Class="Perpetual_Calendar.Views.MainWindow"
+        Width="350" Height="150" CanResize="False"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Вечный Календарь">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <converters:StringToIntConverter x:Key="StringtoIntConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" Grid.Column="0" Watermark="День" VerticalAlignment="Center"
+                 HorizontalAlignment="Stretch" Margin="3,0,3,0" Text="{Binding Day}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Watermark="Месяц" VerticalAlignment="Center"
+                 HorizontalAlignment="Stretch" Margin="3,0,3,0" Text="{Binding Month}" />
+        <TextBox Grid.Row="0" Grid.Column="2" Watermark="Год" VerticalAlignment="Center"
+                 HorizontalAlignment="Stretch" Margin="3,0,3,0" Text="{Binding Year}"/>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Row="0" Grid.Column="0" Name="RadioButton1" GroupName="Group" Content="Юлианский"
+                         Margin="3,0,3,0" />
+            <RadioButton Grid.Row="1" Grid.Column="0" Name="RadioButton2" GroupName="Group" Content="Григорианский"
+                         Margin="3,0,3,0" />
+            <Button Grid.Row="0" Name="Button" Grid.RowSpan="2" Grid.Column="1" Content="Вычислить"
+                    VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="3,0,3,0">
+                <i:Interaction.Behaviors>
+                    <ia:DataTriggerBehavior Binding="{Binding ElementName=RadioButton1,Path=IsChecked}" Value="True">
+                        <ia:ChangePropertyAction TargetObject="{Binding ElementName=Button}" PropertyName="Command" Value="{Binding CalcJulian}" />
+                    </ia:DataTriggerBehavior>
+                    <ia:DataTriggerBehavior Binding="{Binding ElementName=RadioButton2,Path=IsChecked}" Value="True">
+                        <ia:ChangePropertyAction TargetObject="{Binding ElementName=Button}" PropertyName="Command" Value="{Binding CalcGregorian}" />
+                    </ia:DataTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
+
+        <TextBox Grid.Row="2" Grid.Column="1" Watermark="Результат" VerticalAlignment="Center"
+                 HorizontalAlignment="Stretch" Margin="3,0,3,0" Text="{Binding DayOfWeek}" />
+    </Grid>
+</Window>
