@@ -9,7 +9,7 @@
         Title="Вечный Календарь">
 
     <Window.DataContext>
-        <vm:MainWindowViewModel />
+        <vm:AppViewModel />
     </Window.DataContext>
 
     <Grid>
@@ -31,7 +31,7 @@
         <TextBox Grid.Row="0" Grid.Column="2" Watermark="Год" VerticalAlignment="Center"
                  HorizontalAlignment="Stretch" Margin="3,0,3,0" Text="{Binding Year}"/>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="3">
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" >
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />

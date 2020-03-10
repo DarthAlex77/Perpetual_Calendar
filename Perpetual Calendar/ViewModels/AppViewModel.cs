@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Reactive;
-using System.Reactive.Linq;
 using Perpetual_Calendar.Models;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Validation.Abstractions;
-using ReactiveUI.Validation.Extensions;
-using ReactiveUI.Validation.Helpers;
+using ReactiveUI.FluentValidation;
 
 namespace Perpetual_Calendar.ViewModels
 {
-    public class MainWindowViewModel : ReactiveValidationObject<MainWindowViewModel>
+    public class AppViewModel : ReactiveValidationObject
     {
-        public MainWindowViewModel()
+        public AppViewModel():base(new AppViewModelValidator())
         {
-            
-            CalcGregorian = ReactiveCommand.Create(Gregorian, this.IsValid());
-            CalcJulian    = ReactiveCommand.Create(Julian, this.IsValid());
-            this.ValidationRule(vm => vm.Day, day => day >= 1 && day <= 31, "День должен быть от 1 до 31");
-            this.ValidationRule(vm => vm.Month, month => month >= 1 && month <= 31, "Месяц должен быть от 1 до 12");
-            this.ValidationRule(vm => vm.Year, year => year >= 1 && year <= 9999, "Программное ограничение года от 1 до 9999");
+            CalcGregorian = ReactiveCommand.Create(Gregorian,isValid);
+            CalcJulian    = ReactiveCommand.Create(Julian, isValid);
         }
 
         #region Commands
@@ -32,6 +24,7 @@ namespace Perpetual_Calendar.ViewModels
         #region DayOfWeek Property
 
         private String _dayOfWeek;
+
         public String DayOfWeek
         {
             get => _dayOfWeek;
@@ -42,13 +35,54 @@ namespace Perpetual_Calendar.ViewModels
 
         #region Properties
 
-        [Reactive]
-        public Int32 Day { get; set; }
-        [Reactive]
-        public Int32 Month { get; set; }
-        [Reactive]
-        public Int32 Year { get; set; }
+        #region DayProperty
+        private Int32 _day;
+        
+        public Int32 Day
+        {
+            get => _day;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _day, value);
+                RaiseValidation(nameof(Day));
+                RaiseValidation(nameof(Month));
+                RaiseValidation(nameof(Year));
+            }
+        }
 
+        #endregion
+
+        #region MonthProperty
+        private Int32 _month;
+        public Int32 Month
+        {
+            get => _month;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _month, value);
+                RaiseValidation(nameof(Day));
+                RaiseValidation(nameof(Month));
+                RaiseValidation(nameof(Year));
+            }
+        }
+        #endregion
+
+        #region YearProperty
+        private Int32 _year;
+        public Int32 Year
+        {
+            get => _year;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _year, value);
+                RaiseValidation(nameof(Day));
+                RaiseValidation(nameof(Month));
+                RaiseValidation(nameof(Year));
+            }
+        }
+
+        #endregion
+        
         #endregion
 
         #region Methods

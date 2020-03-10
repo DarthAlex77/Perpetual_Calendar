@@ -1,4 +1,4 @@
-// Copyright (c) The Avalonia Project. All rights reserved.
+﻿// Copyright (c) The Avalonia Project. All rights reserved.
 // Licensed under the MIT license. See licence.md file in the project root for full license information.
 
 using System;
@@ -14,7 +14,7 @@ namespace Perpetual_Calendar
 
         public IControl Build(object data)
         {
-            var name = data.GetType().FullName.Replace("ViewModel", "View");
+            var name = data.GetType().FullName?.Replace("ViewModel", "View");
             var type = Type.GetType(name);
 
             if (type != null)

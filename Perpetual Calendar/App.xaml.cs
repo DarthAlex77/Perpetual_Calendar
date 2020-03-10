@@ -16,7 +16,7 @@ namespace Perpetual_Calendar
             {
                 desktop.MainWindow = new MainWindow
                 {
-                        DataContext = new MainWindowViewModel(),
+                        DataContext = new AppViewModel(),
                 };
             }
 
